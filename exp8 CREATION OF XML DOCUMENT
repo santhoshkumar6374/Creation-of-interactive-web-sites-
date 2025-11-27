@@ -1,0 +1,79 @@
+ALGORITHM 
+  
+Step 1: Start the process. 
+Step 2: Display a text box for the user to enter a User ID. 
+Step 3: Display a button labeled "Get User Details". 
+Step 4: When the user clicks the button, a JavaScript function is called to handle the 
+request. 
+Step 5: Inside the function, create an object to request the XML file from the server. 
+Step 6: Open and send a request to load the userlist.xml file. 
+Step 7: Receive the XML file and convert it into an XML document object. 
+Step 8: Retrieve all the userid, username, address, phone, and email elements from the 
+XML. 
+Step 9: Loop through each user ID found in the XML file. 
+Step 10: Compare each user ID with the value entered by the user in the text box. 
+Step 11: If a matching user ID is found, collect the corresponding user details like name, 
+address, phone, and email. 
+Step 12: Display these details in a specific area on the web page. 
+Step 13: End the process.
+
+
+userlist.xml
+<!DOCTYPE html>
+<html>
+<head>
+<title>Searching for XML Elements</title>
+
+<script>
+function readXMLData() {
+    var xmlDocumentObject, users, userId, inputId;
+    xmlDocumentObject = new XMLHttpRequest();
+    xmlDocumentObject.open("GET", "userlist.xml", false);
+    xmlDocumentObject.send();
+
+    var xml = xmlDocumentObject.responseXML;
+
+    users = xml.getElementsByTagName("user");
+    inputId = document.getElementById("myText").value;
+
+    var display = document.getElementById("displayDIV");
+    display.innerHTML = ""; // Clear old output
+
+    for (var i = 0; i < users.length; i++) {
+        userId = users[i].getElementsByTagName("userid")[0].childNodes[0].nodeValue;
+
+        if (userId === inputId) {
+
+            var name = users[i].getElementsByTagName("username")[0].childNodes[0].nodeValue;
+            var address = users[i].getElementsByTagName("address")[0].childNodes[0].nodeValue;
+            var phone = users[i].getElementsByTagName("phone")[0].childNodes[0].nodeValue;
+            var email = users[i].getElementsByTagName("email")[0].childNodes[0].nodeValue;
+
+            display.innerHTML =
+                "<b>User ID:</b> " + userId + "<br>" +
+                "<b>Name:</b> " + name + "<br>" +
+                "<b>Address:</b> " + address + "<br>" +
+                "<b>Phone:</b> " + phone + "<br>" +
+                "<b>Email:</b> " + email;
+
+            return;
+        }
+    }
+
+    display.innerHTML = "❌ User not found!";
+}
+</script>
+
+</head>
+
+<body>
+<h1>Search User</h1>
+
+<input type="text" id="myText" placeholder="Enter User ID (e.g., usr01)">
+<input type="button" value="Get User Details" onclick="readXMLData()">
+
+<p>
+<div id="displayDIV"></div>
+
+</body>
+</html>
