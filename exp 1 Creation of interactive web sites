@@ -1,3 +1,29 @@
+Algorithm 
+Step 1: Start 
+Step 2: Open an HTML editor or authoring tool like VS Code or Dreamweaver. 
+Step 3: 
+Create the HTML structure of the webpage: 
+ Use <form> element to collect user input. 
+ Add fields for Name, Email, and Message. 
+ Add a Submit button. 
+Step 4:Create a CSS file to: 
+ Style the webpage layout. 
+ Format the input fields and button. 
+ Apply background color, margins, padding, and box shadow. 
+Step 5: 
+Create a JavaScript file to: 
+ Add interactivity. 
+ Validate form fields. 
+ Display a response message when the user submits the form. 
+Step 6: 
+Link the HTML file to the external CSS and JavaScript files. 
+Step 7: 
+Open the HTML file in a browser to test the form: 
+ Check field validation. 
+ Confirm visual layout and interaction behavior. 
+Step 8: 
+Debug if necessary, and finalize the design. 
+Step 9: End 
 index.html
 <!DOCTYPE html>
 <html lang="en">
