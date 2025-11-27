@@ -1,0 +1,126 @@
+ALGORITHM 
+  
+Step 1: Start by writing an HTML document named client.html. 
+            Step 2: Inside the <body>, create a <form> tag with method="post" and   
+                        action="http://localhost:8080/FormServer/server" (adjust port and path as  
+                         needed). 
+ Step 3: Add the required input fields: 
+            A text field (<input type="text" name="username">) 
+A password field (<input type="password" name="password">) 
+A submit button (<input type="submit" value="Submit">) 
+ Step 4: Save the file as client.html in your web server’s document root (or open directly in 
+browser for testing). 
+ Step 5: Open the form in a browser using file:/// path or http://localhost/.... 
+ Step 6: Fill in the text and password fields. 
+ Step 7: Click on the Submit button. 
+ Step 8: The browser sends a POST request to the server specified in the action attribute of 
+the form. 
+ Step 9: The request data (form fields) is transferred as key-value pairs in the HTTP 
+request body. 
+Step 10: The server receives and processes the request and sends a response back to the 
+browser.
+
+
+MySrv.java:
+import java.io.IOException;
+import java.io.PrintWriter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class MySrv extends HttpServlet {
+
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        out.println("<!DOCTYPE HTML>");
+        out.println("<html>");
+        out.println("<head><title>A Servlet</title></head>");
+        out.println("<body>");
+
+        // Getting HTML form parameters
+        String username = request.getParameter("uname");
+        String password = request.getParameter("pwd");
+
+        if (username != null && password != null &&
+                username.equals("user") && password.equals("pswd")) {
+            
+            out.println("<h1>Welcome, " + username + "!</h1>");
+        
+        } else {
+            out.println("<h1>Login Failed!</h1>");
+            out.println("<h3>Registration success</h3>");
+            out.println("<a href='index.html'>Click for Home page</a>");
+        }
+
+        out.println("</body>");
+        out.println("</html>");
+        out.close();
+    }
+
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doPost(request, response);
+    }
+}
+
+index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+</head>
+<body bgcolor="#e600e6">
+
+<form action="MySrv" method="post">
+    <center>
+        <h1><u>Login Page</u></h1>
+
+        <h2>
+            Username:
+            <input type="text" name="uname" />
+
+            &nbsp;&nbsp;&nbsp;
+
+            Password:
+            <input type="password" name="pwd" />
+
+            <br><br>
+            <input type="submit" value="Click Me" />
+        </h2>
+    </center>
+</form>
+
+</body>
+</html>
+
+
+web.xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                             http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <servlet>
+        <servlet-name>MySrv</servlet-name>
+        <servlet-class>MySrv</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>MySrv</servlet-name>
+        <url-pattern>/MySrv</url-pattern>
+    </servlet-mapping>
+
+    <welcome-file-list>
+        <welcome-file>Registration.html</welcome-file>
+    </welcome-file-list>
+
+</web-app>
+
+
