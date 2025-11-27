@@ -1,0 +1,97 @@
+ALGORITHM: 
+Step 1: Start the Apache Tomcat Server or any compatible JSP container. 
+Step 2: Create a JSP file (welcome.jsp) using a text editor or IDE (like Eclipse/NetBeans). 
+Step 3: Write the HTML structure along with JSP scriptlets to process user input. 
+Step 4: Create a form page (index.html or form.jsp) that collects input (e.g., name and email). 
+Step 5: Use JSP to retrieve the request parameters and display them dynamically. 
+Step 6: Deploy the files inside the webapps folder of Tomcat (e.g., /webapps/JSPDemo/). 
+Step 7: Start Tomcat and open the form page in a browser. 
+Step 8: Submit the form and observe the dynamic output from the JSP script. 
+Step 9: Stop the server after testing.
+
+
+form.jsp (Input Page)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple JSP Form</title>
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+        }
+        .form-container {
+            width: 300px;
+            margin: 80px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+        input[type="text"], input[type="submit"] {
+            width: 90%;
+            padding: 10px;
+            margin: 8px 0;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <form action="welcome.jsp" method="post">
+        <label for="username">Enter Your Name:</label><br>
+        <input type="text" name="username" id="username" required><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+</body>
+</html>
+
+
+welcome.jsp (Output Page)
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome</title>
+    <style>
+        body {
+            background-color: #e0ffff;
+            text-align: center;
+            font-family: 'Segoe UI', sans-serif;
+            color: #333;
+        }
+        .message {
+            margin-top: 100px;
+            font-size: 24px;
+            color: #006400;
+        }
+    </style>
+</head>
+<body>
+    <div class="message">
+        <%
+            String username = request.getParameter("username");
+
+            if(username != null && !username.trim().equals("")) {
+        %>
+                Welcome, <%= username %>! Thanks for using JSP.
+        <%
+            } else {
+        %>
+                No name entered. Please go back and try again.
+        <%
+            }
+        %>
+    </div>
+</body>
+</html>
+
