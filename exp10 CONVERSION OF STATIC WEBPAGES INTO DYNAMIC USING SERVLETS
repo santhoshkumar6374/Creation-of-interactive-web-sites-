@@ -1,0 +1,216 @@
+ 
+ ALGORITHM 
+Step 1: Start the web server (Tomcat). 
+Step 2: Store user credentials in web.xml. 
+Step 3: Create a login form to collect user ID and password. 
+Step 4: Use a Servlet to: 
+o Authenticate the user from web.xml. 
+o Set a cookie for the session. 
+Step 5: If valid, redirect to the Shopping Cart page. 
+Step 6: Use cookies to track cart items per user. 
+Step 7: Add selected items to the user's cart. 
+Step 8: Display the cart contents dynamically. 
+Step 9: Provide a checkout/logout option. 
+Step 10: End.
+
+web.xml
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #6dd5fa, #2980b9);
+      font-family: Arial;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 100px;
+    }
+    form {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      border-radius: 10px;
+    }
+    input {
+      margin: 10px;
+      padding: 10px;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <h2>User Login</h2>
+  <form action="login" method="post">
+    <input type="text" name="userid" placeholder="User ID" required><br>
+    <input type="password" name="password" placeholder="Password" required><br>
+    <input type="submit" value="Login">
+  </form>
+</body>
+</html>
+
+login.html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <style>
+    body {
+      background: linear-gradient(to right, #6dd5fa, #2980b9);
+      font-family: Arial;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 100px;
+    }
+    form {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      border-radius: 10px;
+    }
+    input {
+      margin: 10px;
+      padding: 10px;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <h2>User Login</h2>
+  <form action="login" method="post">
+    <input type="text" name="userid" placeholder="User ID" required><br>
+    <input type="password" name="password" placeholder="Password" required><br>
+    <input type="submit" value="Login">
+  </form>
+</body>
+</html>
+
+LoginServlet.java
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class LoginServlet extends HttpServlet {
+
+  public void doPost(HttpServletRequest req, HttpServletResponse res)
+      throws IOException, ServletException {
+
+    res.setContentType("text/html");
+    PrintWriter out = res.getWriter();
+
+    String uid = req.getParameter("userid");
+    String pwd = req.getParameter("password");
+
+    ServletContext context = getServletContext();
+    String value = context.getInitParameter(uid); // example: pass123:cardnumber
+
+    if (value != null) {
+        String[] parts = value.split(":");
+
+        if (pwd.equals(parts[0])) {
+            Cookie userCookie = new Cookie("user", uid);
+            res.addCookie(userCookie);
+
+            res.sendRedirect("cart.jsp");
+            return;
+        }
+    }
+
+    out.println("<h3 style='color:red;'>Invalid Credentials</h3>");
+    out.println("<a href='login.html'>Try Again</a>");
+  }
+}
+
+
+cart.jsp
+
+<%@ page language="java" %>
+<%
+  Cookie[] cookies = request.getCookies();
+  String user = null;
+
+  if (cookies != null) {
+      for (Cookie c : cookies) {
+          if ("user".equals(c.getName())) {
+              user = c.getValue();
+              break;
+          }
+      }
+  }
+
+  if (user == null) {
+      response.sendRedirect("login.html");
+      return;
+  }
+%>
+
+<html>
+<head>
+  <style>
+    body {
+      background-color: #f2f6ff;
+      font-family: Arial;
+    }
+    .cart {
+      background: white;
+      padding: 30px;
+      width: 500px;
+      margin: 50px auto;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+    input {
+      margin: 10px;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="cart">
+    <h2>Welcome, <%= user %>!</h2>
+
+    <form action="addToCart.jsp" method="post">
+      <label>Add Item:</label>
+      <input type="text" name="item" required>
+      <input type="submit" value="Add to Cart">
+    </form>
+
+    <h3>Your Cart:</h3>
+    <ul>
+      <%
+        HttpSession session1 = request.getSession();
+        java.util.List<String> items = (java.util.List<String>) session1.getAttribute("cart");
+
+        if (items != null) {
+            for (String item : items) {
+                out.println("<li>" + item + "</li>");
+            }
+        }
+      %>
+    </ul>
+  </div>
+</body>
+</html>
+
+
+addToCart.jsp
+<%@ page import="java.util.*" %>
+
+<%
+  HttpSession session1 = request.getSession();
+  List<String> cart = (List<String>) session1.getAttribute("cart");
+
+  if (cart == null) {
+      cart = new ArrayList<>();
+  }
+
+  String newItem = request.getParameter("item");
+  cart.add(newItem);
+
+  session1.setAttribute("cart", cart);
+  response.sendRedirect("cart.jsp");
+%>
+
