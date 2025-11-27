@@ -1,0 +1,140 @@
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>📬 Contact Us</h1>
+    <p>We would love to hear from you. Please fill out the form below.</p>
+
+    <form id="contactForm">
+        <label for="name">👤 Name</label>
+        <input type="text" id="name" placeholder="Enter your full name" required>
+
+        <label for="email">📧 Email</label>
+        <input type="email" id="email" placeholder="you@example.com" required>
+
+        <label for="message">💬 Message</label>
+        <textarea id="message" placeholder="Write your message here..." required></textarea>
+
+        <button type="submit">🚀 Send Message</button>
+    </form>
+
+    <div id="response"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+
+
+
+index.css
+/* Background */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #e0f7fa, #fce4ec);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Container box */
+.container {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Heading and subtext */
+.container h1 {
+    color: #007acc;
+    margin-bottom: 10px;
+}
+
+.container p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+/* Labels and input fields */
+form label {
+    display: block;
+    text-align: left;
+    margin: 15px 0 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #007acc;
+    outline: none;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 14px;
+    background-color: #007acc;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #005fa3;
+}
+
+/* Response message */
+#response {
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+script.js
+document.getElementById('contactForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const responseDiv = document.getElementById('response');
+
+    if (name && email && message) {
+        responseDiv.textContent = `✅ Thank you, ${name}! We'll contact you at ${email}.`;
+        responseDiv.style.color = 'green';
+    } else {
+        responseDiv.textContent = '❌ Please fill in all fields.';
+        responseDiv.style.color = 'red';
+    }
+});
