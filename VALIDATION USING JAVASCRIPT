@@ -1,0 +1,236 @@
+Step 1: Start the program and open the respective HTML form (Registration, Login, Profile, or Payment page) in a web browser.
+Step 2: Attach JavaScript validation functions (validateRegistration(), validateLogin(), validateProfile(), validatePayment()) to the form's onsubmit or button onclick event.
+Step 3: Inside the function, retrieve the values entered by the user from the form fields using document.getElementById() or form.field.value.
+Step 4: Check that all required fields are not left empty (e.g., name, username, email, card number, etc.).
+Step 5: Validate the email address using a regular expression pattern (e.g., /^\S+@\S+\.\S+$/). 
+Step 6: Validate the password (minimum 6 characters, includes numbers/special characters), and confirm that Confirm Password matches the Password. 
+Step 7: Validate numeric fields: • Phone Number: exactly 10 digits • Card Number: exactly 16 digits • CVV: exactly 3 digits
+Step 8: Check that the expiry date (in the Payment form) is not blank and is a future date.
+Step 9: If any field is invalid, prevent form submission using return false and display a meaningful error message next to the field.
+Step 10: If all validations pass, allow the form to submit and proceed with the next action (registration, login, profile update, or payment). 
+
+
+main.html
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ONLINE BOOK STORE</title>
+</head>
+<body bgcolor="pink">
+    <marquee><h1 style="color:white;"><b><u>ONLINE BOOK STORAGE</u></b></h1></marquee>
+
+    <h2 align="center">
+        <u style="color:purple;">
+            Welcome to the online book store. Press login if you have an ID, otherwise press registration.
+        </u>
+    </h2>
+
+    <h3 align="center">
+        <br><a href="reg.html"><font color="black"><i>REGISTRATION FORM</i></font></a><br><br>
+        <a href="profile.html"><font color="black"><i>USER PROFILE</i></font></a><br><br>
+        <a href="login.html"><font color="black"><i>USER LOGIN</i></font></a><br><br>
+        <a href="catalog.html"><font color="black"><i>BOOKS CATALOG</i></font></a><br><br>
+        <a href="payment.html"><font color="black"><i>PAYMENT</i></font></a><br><br>
+        <a href="order.html"><font color="black"><i>ORDER CONFIRMATION</i></font></a><br><br>
+    </h3>
+</body>
+</html>
+
+
+login.html
+<!DOCTYPE html>
+<html>
+<body bgcolor="blue"><br><br><br>
+
+<script>
+function validate() {
+    var id = document.myform.id.value.trim();
+    var pwd = document.myform.pwd.value.trim();
+
+    if(id === "" || pwd === "") {
+        alert("Login ID and Password must be filled!");
+    } else {
+        alert("VALID INPUT");
+        window.location.href = "catalog.html";
+    }
+}
+</script>
+
+<form name="myform">
+<div align="center">
+    LOGIN ID: <input type="text" name="id"><br><br>
+    PASSWORD: <input type="password" name="pwd"><br><br>
+
+    <input type="button" value="OK" onclick="validate()">
+    <input type="reset" value="CLEAR">
+</div>
+</form>
+
+</body>
+</html>
+
+reg.html
+<!DOCTYPE html>
+<html>
+<body bgcolor="blue"><br><br>
+
+<script>
+function validate() {
+    var name = document.myform.name.value.trim();
+    var addr = document.myform.addr.value.trim();
+    var ph = document.myform.phno.value.trim();
+    var id = document.myform.id.value.trim();
+    var pwd = document.myform.pwd.value.trim();
+
+    if (name=="" || addr=="" || ph=="" || id=="" || pwd=="") {
+        alert("All fields are required!");
+        return false;
+    }
+
+    if(isNaN(ph)) {
+        alert("Phone number must be numeric!");
+        return false;
+    }
+
+    alert("REGISTRATION SUCCESSFUL");
+    return true;
+}
+</script>
+
+<form name="myform" onsubmit="return validate()">
+<div align="center">
+<pre>
+NAME           : <input type="text" name="name">
+ADDRESS        : <input type="text" name="addr">
+CONTACT NUMBER : <input type="text" name="phno">
+LOGIN ID       : <input type="text" name="id">
+PASSWORD       : <input type="password" name="pwd">
+</pre>
+<br>
+<input type="submit" value="OK">
+<input type="reset" value="CLEAR">
+</div>
+</form>
+
+</body>
+</html>
+
+profile.html
+<!DOCTYPE html>
+<html>
+<body bgcolor="pink"><br><br><br>
+
+<script>
+function validate() {
+    var id = document.myform.id.value;
+    var pwd = document.myform.pwd.value;
+
+    if(id=="" || pwd=="") {
+        alert("INVALID INPUT");
+    } else {
+        alert("VALID INPUT");
+    }
+}
+</script>
+
+<form name="myform">
+<div align="center">
+<pre>
+LOGIN ID : <input type="text" name="id">
+PASSWORD : <input type="password" name="pwd">
+</pre>
+<br><br>
+<input type="button" value="OK" onclick="validate()">
+<input type="reset" value="CLEAR">
+</div>
+</form>
+
+</body>
+</html>
+
+catlog.html
+<!DOCTYPE html>
+<html>
+<body bgcolor="pink"><br><br><br>
+
+<div align="center">
+<pre>
+BOOK TITLE : <input type="text" name="title">
+</pre>
+<br><br>
+
+<input type="submit" value="OK">
+<input type="reset" value="CLEAR">
+
+</div>
+</body>
+</html>
+
+order.html
+<!DOCTYPE html>
+<html>
+<body bgcolor="pink"><br><br><br>
+
+<div align="center">
+<pre>
+LOGIN ID      : <input type="text" name="id">
+TITLE         : <input type="text" name="title">
+NO. OF BOOKS  : <input type="number" name="no">
+COST OF BOOK  : <input type="number" name="cost">
+DATE          : <input type="text" name="date">
+</pre>
+<br><br>
+
+<input type="submit" value="OK">
+<input type="reset" value="CLEAR">
+</div>
+
+</body>
+</html>
+
+payment.html
+
+<!DOCTYPE html>
+<html>
+<body bgcolor="pink"><br><br><br>
+
+<script>
+function validate() {
+    var id = document.myform.id.value;
+    var pwd = document.myform.pwd.value;
+    var amount = document.myform.amount.value;
+    var num = document.myform.num.value;
+
+    if(id=="" || pwd=="" || amount=="" || num=="") {
+        alert("All fields must be filled");
+        return false;
+    }
+
+    if(isNaN(amount) || isNaN(num)) {
+        alert("Amount and Credit Card Number must be numeric!");
+        return false;
+    }
+
+    alert("VALID INPUT");
+    return true;
+}
+</script>
+
+<form name="myform" onsubmit="return validate()">
+<div align="center">
+<pre>
+LOGIN ID          : <input type="text" name="id">
+PASSWORD          : <input type="password" name="pwd">
+AMOUNT            : <input type="text" name="amount">
+CREDIT CARD NO.   : <input type="password" name="num">
+</pre>
+<br><br>
+
+<input type="submit" value="OK">
+<input type="reset" value="CLEAR">
+</div>
+</form>
+
+</body>
+</html>
