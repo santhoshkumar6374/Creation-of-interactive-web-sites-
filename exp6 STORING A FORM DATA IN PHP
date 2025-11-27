@@ -1,0 +1,143 @@
+Step 1: Create a simple HTML page with a search input field where users can type the query. 
+Step 2: Use JavaScript to capture the onkeyup or input event in the search box. 
+Step 3: When the user types something, use AJAX (XMLHttpRequest or fetch()) to send the 
+query to a PHP file on the server without reloading the page. 
+Step 4: Pass the typed keyword as a GET or POST parameter in the AJAX request. 
+Step 5: Receive the search results from the server and dynamically display them inside a <div> or 
+similar HTML element. 
+Step 6: In the PHP script, connect to the MySQL database using mysqli_connect() or PDO. 
+Step 7: Retrieve the search term sent from the AJAX request using $_GET['term'] or $_POST 
+['term']. 
+Step 8: Write an SQL query to select records from the relevant table using a LIKE clause: 
+Step 11: Receive the response from the server and update the HTML content (such as a dropdown 
+or table) to show the filtered search results. 
+Step 12: Repeat the process on every key press to provide a live search experience.
+
+
+index.php
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.error { color: #FF0000; }
+</style>
+</head>
+<body>
+
+<?php
+$nameErr = $emailErr = $genderErr = $websiteErr = "";
+$name = $email = $gender = $comment = $website = $result = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    // Name Validation
+    if (empty($_POST["name"])) {
+        $nameErr = "Name is required";
+    } else {
+        $name = test_input($_POST["name"]);
+        if (!preg_match("/^[a-zA-Z ]*$/", $name)) {
+            $nameErr = "Only letters and white space allowed";
+        }
+    }
+
+    // Email Validation
+    if (empty($_POST["email"])) {
+        $emailErr = "Email is required";
+    } else {
+        $email = test_input($_POST["email"]);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr = "Invalid email format";
+        }
+    }
+
+    // Website Validation
+    if (empty($_POST["website"])) {
+        $website = "";
+    } else {
+        $website = test_input($_POST["website"]);
+        if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $website)) {
+            $websiteErr = "Invalid URL";
+        }
+    }
+
+    // Comment
+    if (!empty($_POST["comment"])) {
+        $comment = test_input($_POST["comment"]);
+    }
+
+    // Gender Validation
+    if (empty($_POST["gender"])) {
+        $genderErr = "Gender is required";
+    } else {
+        $gender = test_input($_POST["gender"]);
+    }
+
+    // Save to DB only if no errors
+    if ($nameErr == "" && $emailErr == "" && $genderErr == "" && $websiteErr == "") {
+
+        $conn = new mysqli("localhost", "root", "", "iplab");
+
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        $sql = "INSERT INTO register (name, email, website, comments, gender)
+                VALUES ('$name', '$email', '$website', '$comment', '$gender')";
+
+        if ($conn->query($sql) === TRUE) {
+            $result = "New Record Inserted Successfully";
+        } else {
+            $result = "Error: " . $conn->error;
+        }
+
+        $conn->close();
+    }
+}
+
+// Input cleaning function
+function test_input($data) {
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
+?>
+
+<h2>Registration Form</h2>
+<p><span class="error">* required field</span></p>
+
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+
+    Name:
+    <input type="text" name="name" value="<?php echo $name; ?>">
+    <span class="error">* <?php echo $nameErr; ?></span>
+    <br><br>
+
+    E-mail:
+    <input type="text" name="email" value="<?php echo $email; ?>">
+    <span class="error">* <?php echo $emailErr; ?></span>
+    <br><br>
+
+    Website:
+    <input type="text" name="website" value="<?php echo $website; ?>">
+    <span class="error"><?php echo $websiteErr; ?></span>
+    <br><br>
+
+    Comment:
+    <textarea name="comment" rows="5" cols="40"><?php echo $comment; ?></textarea>
+    <br><br>
+
+    Gender:
+    <input type="radio" name="gender" value="female" <?php if($gender=="female") echo "checked"; ?>>Female
+    <input type="radio" name="gender" value="male" <?php if($gender=="male") echo "checked"; ?>>Male
+    <span class="error">* <?php echo $genderErr; ?></span>
+    <br><br>
+
+    <input type="submit" name="submit" value="Submit">
+
+</form>
+
+<h3><?php echo $result; ?></h3>
+
+</body>
+</html>
