@@ -1,0 +1,71 @@
+ 
+ALGORITHM 
+ 
+Step1: Start the HTML document. 
+Step 2: Use <img> tag to embed images. 
+Step 3: Use <audio> tag with controls to add audio. 
+Step 4: Use <video> tag with controls to embed video. 
+Step 5: Add necessary src, type, and styling attributes. 
+Step 6: Save the file with .html extension. 
+Step 7: Open the file in a browser to view the multimedia content. 
+
+Correct Multimedia HTML Code (multimedia.html)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multimedia Demo</title>
+    <style>
+        body {
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #003366;
+        }
+        .media-section {
+            border: 2px solid #0077b6;
+            background-color: #e0f7fa;
+            margin: 20px auto;
+            padding: 20px;
+            width: 80%;
+            border-radius: 10px;
+        }
+        img {
+            width: 300px;
+            height: auto;
+            border: 2px solid #004d99;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Multimedia Content in Website</h1>
+
+    <div class="media-section">
+        <h2>Image</h2>
+        <img src="sample.jpg" alt="Sample Image">
+    </div>
+
+    <div class="media-section">
+        <h2>Audio</h2>
+        <audio controls>
+            <source src="sample.mp3" type="audio/mpeg">
+            Your browser does not support the audio tag.
+        </audio>
+    </div>
+
+    <div class="media-section">
+        <h2>Video</h2>
+        <video width="320" height="240" controls>
+            <source src="sample.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+</body>
+</html>
