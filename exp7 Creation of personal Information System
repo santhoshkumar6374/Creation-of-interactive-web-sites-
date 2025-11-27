@@ -1,0 +1,158 @@
+ALGORITHM: 
+ 
+  Step 1: Start the web server and create a MySQL database. 
+Setp 2:Create an HTML form for entering personal details. 
+  Step 3: Create a PHP script to: 
+o Insert data into the database. 
+o Retrieve and display records. 
+o Update or delete records. 
+  Step 4: Connect the HTML form with PHP using action attribute. 
+  Step 5: Store records in MySQL using INSERT, SELECT, UPDATE, DELETE queries. 
+  Step 6: Display success/failure messages. 
+  Step 7: End.
+
+  style.css:
+  /* Google Font */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+:root{
+  --bg-light: #f2f6ff;
+  --primary:  #005eb8;       /* deep blue  */
+  --primary-light:#067bff;
+  --accent:   #ff7f50;       /* coral      */
+  --text-dim: #555;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:"Poppins",sans-serif;
+}
+
+body{
+  background: var(--bg-light);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  padding:30px 10px;
+}
+
+h1,h2{
+  color:var(--primary);
+  margin-bottom:15px;
+  text-align:center;
+}
+
+.card{
+  background:#fff;
+  padding:25px 30px;
+  border-radius:12px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08);
+  width:clamp(320px,90vw,480px);
+}
+
+label{
+  color:var(--text-dim);
+  font-weight:600;
+}
+
+input{
+  width:100%;
+  padding:10px 12px;
+  margin:6px 0 16px;
+  border:2px solid #d0d8ff;
+  border-radius:8px;
+  outline:none;
+  transition:border .2s;
+}
+
+input:focus{
+  border-color:var(--primary-light);
+}
+
+button, .btn{
+  appearance:none;
+  border:none;
+  cursor:pointer;
+  background:var(--primary);
+  color:#fff;
+  padding:10px 18px;
+  border-radius:8px;
+  font-weight:600;
+  transition:background .2s;
+  text-decoration:none;
+}
+
+button:hover,
+.btn:hover{
+  background:var(--primary-light);
+}
+
+.table-wrap{
+  width:clamp(320px,95vw,900px);
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08);
+}
+
+th,td{
+  padding:14px 18px;
+  text-align:left;
+}
+
+th{
+  background:var(--primary);
+  color:#fff;
+  font-weight:600;
+}
+
+tr:nth-child(even){
+  background:#f9fbff;
+}
+
+index.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Personal Information System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <section class="card">
+    <h1>Personal Information System</h1>
+
+    <form action="insert.php" method="post">
+      <label>Name</label>
+      <input type="text" name="name" required>
+
+      <label>Age</label>
+      <input type="number" name="age" required>
+
+      <label>Address</label>
+      <input type="text" name="address" required>
+
+      <label>Phone</label>
+      <input type="tel" name="phone" pattern="[0-9]{10}" required
+             title="Enter 10-digit phone number">
+
+      <button type="submit">Save Record</button>
+    </form>
+
+    <br>
+    <a class="btn" href="display.php">View All Records</a>
+  </section>
+
+</body>
+</html>
