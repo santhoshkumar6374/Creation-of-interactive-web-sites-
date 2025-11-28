@@ -156,3 +156,101 @@ index.html
 
 </body>
 </html>
+
+display.php
+<?php 
+$conn = new mysqli("localhost", "root", "", "lab"); 
+if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); } 
+ 
+$result = $conn->query("SELECT * FROM personal_info ORDER BY id DESC"); 
+?> 
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8" /> 
+  <title>Records | Personal Info System</title> 
+  <link rel="stylesheet" href="style.css" /> 
+</head> 
+<body> 
+  <h2>Stored Personal Records</h2> 
+ 
+  <div class="table-wrap"> 
+    <table> 
+      <thead> 
+        <tr> 
+          <th>ID</th><th>Name</th><th>Age</th><th>Address</th><th>Phone</th> 
+        </tr> 
+      </thead> 
+      <tbody> 
+        <?php 
+        if ($result->num_rows > 0){ 
+          while($row = $result->fetch_assoc()){ 
+            echo "<tr> 
+                    <td>{$row["id"]}</td> 
+                    <td>{$row["name"]}</td> 
+                    <td>{$row["age"]}</td> 
+                    <td>{$row["address"]}</td> 
+                    <td>{$row["phone"]}</td> 
+                  </tr>"; 
+          } 
+        } else { 
+          echo "<tr><td colspan='5'>No records found.</td></tr>"; 
+        } 
+        ?> 
+      </tbody> 
+    </table> 
+  </div> 
+ 
+  <br /> 
+  <a class="btn" href="index.html">Add New Entry</a> 
+</body> 
+</html> 
+<?php $conn->close(); ?>
+ 
+  <br /> 
+  <a class="btn" href="index.html">Add New Entry</a> 
+</body> 
+</html> 
+<?php $conn->close(); ?>
+
+
+insert.php
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
+    $name = $_POST['name'];
+    $age = $_POST['age'];
+    $address = $_POST['address'];
+    $phone = $_POST['phone'];
+
+    // Database connection
+    $conn = new mysqli("localhost", "root", "", "lab");
+
+    if ($conn->connect_error) {
+        die("Connection Failed: " . $conn->connect_error);
+    }
+
+    // Prevent SQL Injection using prepared statement
+    $sql = $conn->prepare("INSERT INTO personal_info (name, age, address, phone) VALUES (?, ?, ?, ?)");
+    $sql->bind_param("siss", $name, $age, $address, $phone);
+
+    if ($sql->execute()) {
+        echo "<script>alert('Record Saved Successfully!'); window.location='display.php';</script>";
+    } else {
+        echo "Error: " . $conn->error;
+    }
+
+    $sql->close();
+    $conn->close();
+}
+?>
+
+
+SQL QUERY
+CREATE TABLE `personal_info` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) DEFAULT NULL,
+  `age` int(11) DEFAULT NULL,
+  `address` varchar(255) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
