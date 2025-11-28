@@ -77,3 +77,63 @@ function readXMLData() {
 
 </body>
 </html>
+
+index.html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Searching for XML Elements</title>
+
+<script>
+function readXMLData() {
+    var xmlDocumentObject, users, userId, inputId;
+    xmlDocumentObject = new XMLHttpRequest();
+    xmlDocumentObject.open("GET", "userlist.xml", false);
+    xmlDocumentObject.send();
+
+    var xml = xmlDocumentObject.responseXML;
+
+    users = xml.getElementsByTagName("user");
+    inputId = document.getElementById("myText").value;
+
+    var display = document.getElementById("displayDIV");
+    display.innerHTML = ""; // Clear old output
+
+    for (var i = 0; i < users.length; i++) {
+        userId = users[i].getElementsByTagName("userid")[0].childNodes[0].nodeValue;
+
+        if (userId === inputId) {
+
+            var name = users[i].getElementsByTagName("username")[0].childNodes[0].nodeValue;
+            var address = users[i].getElementsByTagName("address")[0].childNodes[0].nodeValue;
+            var phone = users[i].getElementsByTagName("phone")[0].childNodes[0].nodeValue;
+            var email = users[i].getElementsByTagName("email")[0].childNodes[0].nodeValue;
+
+            display.innerHTML =
+                "<b>User ID:</b> " + userId + "<br>" +
+                "<b>Name:</b> " + name + "<br>" +
+                "<b>Address:</b> " + address + "<br>" +
+                "<b>Phone:</b> " + phone + "<br>" +
+                "<b>Email:</b> " + email;
+
+            return;
+        }
+    }
+
+    display.innerHTML = "❌ User not found!";
+}
+</script>
+
+</head>
+
+<body>
+<h1>Search User</h1>
+
+<input type="text" id="myText" placeholder="Enter User ID (e.g., usr01)">
+<input type="button" value="Get User Details" onclick="readXMLData()">
+
+<p>
+<div id="displayDIV"></div>
+
+</body>
+</html>
